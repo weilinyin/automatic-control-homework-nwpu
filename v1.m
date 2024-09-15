@@ -43,9 +43,9 @@ plot(real(p1), imag(p1), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
 plot(real(p2), imag(p2), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
 hold off;
 
-% 调整增益，检查闭环极点的位置
-K_final = 1;  % 根据根轨迹选择合适的增益值
-CLTF = feedback(K_final * OLTF_compensated, 1);
+% 检查闭环极点的位置
+
+CLTF = feedback(G_c * G, H);
 
 % 验证设计：绘制阶跃响应
 figure;
