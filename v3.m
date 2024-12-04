@@ -14,23 +14,26 @@ v=100;
 q=6125;
 
 x3_0=9.8/v;
-
 A=[-q*S*Cya/(m*v), 1 ,1;
     q*S*L*mza/Jz, q*S*L*mzoz*L/(2*Jz*v), 0;
     0, 0, 0];
 b=[-q*S*Cydz/(m*v); q*S*L*mzdz/Jz;0];
 c=[1,0,0];
 d=0;
-
 sys=ss(A,b,c,d);
 [num,den]=ss2tf(A,b,c,d);
-sys1=tf(num,den);
-sys2=-0.3-30*tf(1,[1 0])-0.3*tf([100 0],[1 100]);
+sys1=tf(num,den);%俯仰通道模型
+
+sys2=-0.3-30*tf(1,[1 0])-0.3*tf([100 0],[1 100]);%PID
+
 CLTF=feedback(sys1*sys2,1);
 [A,b,c,d]=tf2ss(CLTF.Numerator{1},CLTF.Denominator{1});
-sys=ss(A,b,c,d);
+sys_final=ss(A,b,c,d);%最终模型
+
 t=[0:0.001:1]';
 u=zeros(1001,1)+0.3;
-[y,t,x]=lsim(sys,u,t,[0;0;0;0;x3_0]);
+[y,t,x]=lsim(sys_final,u,t,[0;0;0;0;x3_0]);%模拟
+
 plot(t,y);
 title('$\alpha$','Interpreter','latex');
+grid on
