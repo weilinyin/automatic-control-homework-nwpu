@@ -12,3 +12,9 @@ Jy=0.1897;
 Jx=0.0073;
 v=100;
 q=6125;
+
+A=[-q*S*Cya/(m*v), 1;
+    q*S*L*mza/Jz, q*S*L*mzoz*L/(2*Jz*v)];
+b=[-q*S*Cydz/(m*v); q*S*L*mzdz/Jz];
+c=[1,0];
+d=0;
