@@ -23,13 +23,14 @@ plot(real(p1), imag(p1), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
 plot(real(p2), imag(p2), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
 hold off;
 
-
-
-
+%计算相角差额
+[~, ~, poles] = damp(OLTF);
+phi=pi - angle(p1-poles(1)) - angle(p1-poles(2)) - angle(p1-poles(3)) + angle(p1+0.05);
+alpha=1.3;
 
 % 设计超前校正器 G_c(s)
-z = 1.5;  % 补偿器零点
-p = 9.477;    % 补偿器极点
+z = 2*sqrt(3)/tan(alpha)+2;  % 补偿器零点
+p = 2*sqrt(3)/tan(phi+alpha)+2;    % 补偿器极点
 K = abs((p1 + p) * (p1^2 + 0.1 * p1 + 4) * p1/((2*p1+0.1)*(p1+z)));    % 增益
 G_c = K * tf([1 z],[1 p]);  % 超前校正器
 
